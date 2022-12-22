@@ -3,10 +3,15 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "setup": "yarn setup:create-env",
+    "setup:create-env": "cp .env.template .env",
     "start": "env $(grep -v '^#' ./.env) nuxt start",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "deploy:tag": "TAG=`echo staging-abo-$(date +%Y%m%d-%H%M%S)` && git tag $TAG && git push origin $TAG",
+    "deploy:staging": "yarn deploy:delete-staging-tag && yarn deploy:tag",
+    "deploy:delete-staging-tag": "git fetch --tags && git push origin --delete $(git tag -l 'staging-*') || true && git fetch origin --prune 'refs/tags/*:refs/tags/*'"
   },
   "devDependencies": {
     "nuxt": "3.0.0",

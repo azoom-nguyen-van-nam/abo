@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  // ssr: false,
+  ssr: false,
   typescript: {
     shim: false
   },
