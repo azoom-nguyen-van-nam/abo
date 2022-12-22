@@ -1,12 +1,15 @@
-import { useApi } from '@/plugins/api'
-import { User, LoginRequest } from '@/types/User'
+import { useApi } from '~~/plugins/api'
+import { LoginRequest, RegisterRequest } from '@/types/Auth'
+export default class AuthService {
+  static getLoggedInUser = () => {
+    return useApi.aboApi.get(`users/info`).json()
+  }
 
-const getLoggedInUser = (): User => {
-  return useApi.aboApi.get(`users/info`).json()
+  static login = (account: LoginRequest) => {
+    return useApi.aboApi.post(`users/login`, { json: account }).json()
+  }
+
+  static register = (account: RegisterRequest) => {
+    return useApi.aboApi.post(`users/login`, { json: account }).json()
+  }
 }
-
-const login = (account: LoginRequest) => {
-  return useApi.aboApi.post(`users/login`, { json: account }).json()
-}
-
-export { getLoggedInUser, login }

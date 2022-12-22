@@ -1,8 +1,10 @@
 <template>
-  <div class="home">
-    <p class="text">Home</p>
-  </div>
+  <div class="the-footer">This is footer</div>
 </template>
 
-<script lang="ts" setup></script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.the-footer {
+  padding: 10px 0;
+  background-color: #ccc;
+}
+</style>

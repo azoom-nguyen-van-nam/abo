@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import { navigateToDefaultRouter } from '@/middlewares/redirect'
-import { getLoggedInUser, login } from '@/models/auth'
-import { User, LoginRequest } from '@/types/User'
+import AuthService from '@/models/auth'
+import { User } from '~/types/User'
+import { LoginRequest } from '~/types/Auth'
 
 type Auth = {
   loggedInUser: User
 }
 
-export const useAuth = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
   state: (): Auth => ({
     loggedInUser: {
       id: 0,
@@ -18,12 +19,12 @@ export const useAuth = defineStore('auth', {
   }),
 
   actions: {
-    getUserInfo() {
-      return getLoggedInUser()
+    async getLoggedInUser() {
+      const user: User = await AuthService.getLoggedInUser()
+      this.loggedInUser = user
     },
     async login(account: LoginRequest) {
-      const user: User = await login(account).catch(() => false)
-      if (!user) return false
+      const user: User = await AuthService.login(account).catch(() => false)
       this.loggedInUser = user
       navigateToDefaultRouter()
     }
