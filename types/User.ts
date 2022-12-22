@@ -1,13 +1,22 @@
-interface User {
+export interface User {
   id: number
   name: string
   token: string
-  role: number
+  role: 0 | 1
 }
 
-interface LoginRequest {
-  username: string
+export interface GetUsersRequest {
+  name?: string
+  role?: 0 | 1
+}
+
+export interface CreateUserRequest {
+  name: string
+  password: string
+  role: 0 | 1
+}
+
+export interface UpdateUserRequest {
+  name: string
   password: string
 }
-
-export { LoginRequest, User }

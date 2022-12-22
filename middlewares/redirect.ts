@@ -1,5 +1,5 @@
-import { useAuth } from '~~/store/auth'
-import { roles } from '@/constants/roles'
+import { useAuthStore } from '~~/store/auth'
+import { roles } from '~~/constants/user'
 
 const defaultEndpoint = {
   admin: '/',
@@ -8,7 +8,7 @@ const defaultEndpoint = {
 }
 
 const navigateToDefaultRouter = () => {
-  const { loggedInUser } = useAuth()
+  const { loggedInUser } = useAuthStore()
   switch (loggedInUser.role) {
     case roles.admin: {
       navigateTo(defaultEndpoint.admin)
