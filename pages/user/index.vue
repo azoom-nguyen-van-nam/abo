@@ -1,5 +1,10 @@
 <template>
-  <UserTable />
+  <Suspense>
+    <UserTable />
+    <template #fallback>
+      <global-the-oading text="Fetching users..." />
+    </template>
+  </Suspense>
 </template>
 
 <script setup>
