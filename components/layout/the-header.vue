@@ -1,23 +1,30 @@
 <template>
   <div class="the-header">
-    {{ loggedInUser.name }}
+    <p class="account">{{ authStore.loggedInUser.name }}</p>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { useAuthStore } from '~~/store/auth'
-const { loggedInUser } = useAuthStore()
+<script setup>
+import { useAuthStore } from '@/store/auth'
+const authStore = useAuthStore()
 </script>
 
 <style lang="scss" scoped>
 .the-header {
-  text-align: end;
-  padding: 10px 5px;
-  font-weight: bold;
-  background: #ccc;
-  cursor: pointer;
-  &:hover {
+  // position: fixed;
+  // top: 0;
+  // text-align: end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d9d6d6;
+  padding: 0 10px;
+  > .title {
+    font-weight: bold;
+  }
+  > .account:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 </style>
