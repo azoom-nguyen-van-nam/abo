@@ -1,5 +1,15 @@
 export default defineNuxtConfig({
-  // ssr: false,
+  ssr: false,
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=500, initial-scale=1',
+      title: 'Abo',
+      meta: [
+        { name: 'description', content: 'Abo site' } // ~ <meta name="description" content="My amazing site">
+      ]
+    }
+  },
   typescript: {
     shim: false
   },
