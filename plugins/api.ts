@@ -1,6 +1,6 @@
 import ky from 'ky-universal'
 import { Pinia } from 'pinia'
-import { navigateToDefaultRouter } from '@/middlewares/redirect'
+import { navigateToDefaultRouter } from '@/middleware/redirect'
 import { useAuthStore } from '@/store/auth'
 
 export const useApi: any = {}

@@ -7,20 +7,29 @@ const defaultEndpoint = {
   notLogin: '/login'
 }
 
+export default defineNuxtRouteMiddleware(() => {
+  const { loggedInUser } = useAuthStore()
+  if (loggedInUser.token) {
+    return navigateToDefaultRouter()
+  }
+})
+
 const navigateToDefaultRouter = () => {
+  const defaultEndpoint = getDefaultEndpoint()
+  return navigateTo(defaultEndpoint)
+}
+
+const getDefaultEndpoint = () => {
   const { loggedInUser } = useAuthStore()
   switch (loggedInUser.role) {
     case roles.admin: {
-      navigateTo(defaultEndpoint.admin)
-      break
+      return defaultEndpoint.admin
     }
     case roles.staff: {
-      navigateTo(defaultEndpoint.staff)
-      break
+      return defaultEndpoint.staff
     }
     default: {
-      navigateTo(defaultEndpoint.notLogin)
-      break
+      return defaultEndpoint.notLogin
     }
   }
 }
