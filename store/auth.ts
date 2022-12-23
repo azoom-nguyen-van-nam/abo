@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
     loggedInUser: {
       id: 0,
       name: 'abo-admin',
+      email: 'admin@azoom.jp',
       token: 'abo',
       role: 0
     }

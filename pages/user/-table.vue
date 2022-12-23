@@ -3,6 +3,7 @@
     <tr class="headers">
       <th class="col">ID</th>
       <th class="col">Name</th>
+      <th class="col">Email</th>
       <th class="col">Role</th>
     </tr>
     <tr
@@ -13,7 +14,8 @@
     >
       <td class="col">{{ user.id }}</td>
       <td class="col">{{ user.name }}</td>
-      <td class="col">{{ user.role }}</td>
+      <td class="col">{{ user.email }}</td>
+      <td class="col">{{ formatRole(user.role) }}</td>
     </tr>
   </table>
 </template>
