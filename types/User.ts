@@ -1,6 +1,7 @@
 export interface User {
   id: number
   name: string
+  email: string
   token: string
   role: 0 | 1
 }
@@ -18,5 +19,6 @@ export interface CreateUserRequest {
 
 export interface UpdateUserRequest {
   name: string
+  email: string
   password: string
 }
