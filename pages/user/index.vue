@@ -2,7 +2,7 @@
   <Suspense>
     <UserTable />
     <template #fallback>
-      <global-the-oading text="Fetching users..." />
+      <global-the-loading text="Fetching users..." />
     </template>
   </Suspense>
 </template>
