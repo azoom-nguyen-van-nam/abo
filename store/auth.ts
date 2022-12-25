@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { navigateToDefaultRouter } from '@/middlewares/redirect'
+import { navigateToDefaultRouter } from '@/middleware/redirect'
 import AuthService from '~/models/auth'
 import { User } from '~/types/User'
 import { LoginRequest } from '~/types/Auth'

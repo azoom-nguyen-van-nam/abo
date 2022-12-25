@@ -1,19 +1,13 @@
 <template>
   <div class="main-layout">
-    <the-sidebar />
-    <the-header />
+    <layout-the-sidebar />
+    <layout-the-header />
     <div class="content">
       <NuxtPage />
     </div>
-    <the-footer />
+    <layout-the-footer />
   </div>
 </template>
-
-<script setup>
-import TheSidebar from '@/components/layout/the-sidebar'
-import TheHeader from '@/components/layout/the-header'
-import TheFooter from '@/components/layout/the-footer'
-</script>
 
 <style scoped lang="scss">
 .main-layout {
