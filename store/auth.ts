@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', {
   state: (): Auth => ({
     loggedInUser: {
       id: 0,
-      name: 'abo-admin',
+      name: 'Admin',
       email: 'admin@azoom.jp',
       token: 'abo',
       role: 0

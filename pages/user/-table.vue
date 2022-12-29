@@ -1,31 +1,53 @@
 <template>
-  <div class="user-list">
-    <div class="heading">
-      <button class="button -add" @click="openUserDialog({})">Add</button>
-      <label class="count">Count: {{ userCount }}</label>
-    </div>
-    <table class="table">
-      <tr class="headers">
-        <th class="col">ID</th>
-        <th class="col">Name</th>
-        <th class="col">Email</th>
-        <th class="col">Role</th>
-      </tr>
-      <tr
-        class="row"
-        v-for="user in userStore.users"
-        :key="user.id"
-        @click="openUserDialog(user)"
+  <div class="user-list pa-3">
+    <div class="heading mb-3">
+      <v-btn
+        color="success"
+        icon="mdi-plus"
+        @click="openUserDialog({})"
+      ></v-btn>
+      <v-spacer></v-spacer>
+      <v-autocomplete
+        v-model="userSearch"
+        :items="userStore.users"
+        item-title="name"
+        return-object
+        label="Search..."
+        clearable
+        open-on-clear
+        variant="underlined"
+        prepend-inner-icon="mdi-magnify"
+        no-data-text="Not found"
+        class="search"
       >
-        <td class="col">{{ user.id }}</td>
-        <td class="col">{{ user.name }}</td>
-        <td class="col">{{ user.email }}</td>
-        <td class="col">{{ formatRole(user.role) }}</td>
-      </tr>
-    </table>
+      </v-autocomplete>
+    </div>
+    <v-table :hover="true" class="table">
+      <thead class="thead text-left">
+        <tr class="row">
+          <th class="col">ID</th>
+          <th class="col">Name</th>
+          <th class="col">Email</th>
+          <th class="col">Role</th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr
+          class="row"
+          v-for="user in userStore.users"
+          :key="user.id"
+          @click="openUserDialog(user)"
+        >
+          <td class="col">{{ user.id }}</td>
+          <td class="col">{{ user.name }}</td>
+          <td class="col">{{ user.email }}</td>
+          <td class="col">{{ formatRole(user.role) }}</td>
+        </tr>
+      </tbody>
+    </v-table>
+    <label class="count float-right mt-3">Count: {{ userCount }}</label>
     <UserDialog
-      v-if="isShow"
-      :is-show="isShow"
+      v-if="isShowDialog"
       :user="selectedUser"
       @addUser="addUser"
       @saveUser="saveUser"
@@ -35,84 +57,95 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import UserDialog from './-@user-dialog.vue'
 import { useUserStore } from '~/store/user'
+import { User } from '~/types/User'
+
 const userStore = useUserStore()
 await userStore.getUsers({})
 
-const userCount = computed(() => userStore.users.length)
-const isShow = ref(false)
+const userCount = computed<number>(() => userStore.users.length)
+const isShowDialog = ref(false)
 const selectedUser = ref({})
 
-function openUserDialog(user) {
+const userSearch = ref(null)
+watch(userSearch, (newVal) => {
+  if (!newVal) return
+  openUserDialog(newVal)
+})
+
+function openUserDialog(user: User | object) {
   selectedUser.value = user
-  isShow.value = true
+  isShowDialog.value = true
 }
 function closeUserDialog() {
-  isShow.value = false
+  isShowDialog.value = false
 }
 
-function addUser(user) {
-  userStore.users = [...userStore.users, user]
-  closeUserDialog()
-}
-function saveUser(user) {
-  const index = userStore.users.findIndex((u) => u.id === user.id)
-  if (index !== -1) {
-    userStore.users[index] = user
+function addUser(user: User) {
+  try {
+    userStore.addUser(user)
     closeUserDialog()
+    useSnackbar()
+  } catch (error) {
+    useSnackbar({
+      status: false,
+      message: getErrorMessage(error)
+    })
   }
 }
-function deleteUser(userId) {
-  userStore.users = userStore.users.filter((user) => user.id !== userId)
-  closeUserDialog()
+function saveUser(user: User) {
+  try {
+    userStore.updateUser(user.id, user)
+    closeUserDialog()
+    useSnackbar()
+  } catch (error) {
+    useSnackbar({
+      status: false,
+      message: getErrorMessage(error)
+    })
+  }
+}
+function deleteUser(userId: number) {
+  try {
+    userStore.deleteUser(userId)
+    closeUserDialog()
+    useSnackbar()
+  } catch (error) {
+    useSnackbar({
+      status: false,
+      message: getErrorMessage(error)
+    })
+  }
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message
+  }
+  return String(error)
 }
 </script>
 
 <style scoped lang="scss">
 .user-list {
+  position: relative;
   > .heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  > .heading > .button {
-    padding: 0.5rem 1.5rem;
-    border-radius: 3px;
-    border: none;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
-    &.-add {
-      background-color: #008000;
-    }
+  > .heading > .search {
+    max-width: 25rem;
   }
   > .heading > .count {
     font-size: 15px;
   }
-  > .table {
-    width: 100%;
-    border: solid 1px rgba(0, 0, 0, 0.12);
-    border-collapse: collapse;
-    margin-top: 1rem;
-    > .headers {
-      border-radius: 5px;
-      background-color: #7fcaff;
-      > .col {
-        border: 1px solid #a5a2a2;
-      }
-    }
-    > .row {
-      &:hover {
-        background-color: #d0caca;
-        cursor: pointer;
-      }
-      > .col {
-        border: 1px solid #ccc;
-        text-align: center;
-        padding: 5px;
-      }
+  > .table > .v-table__wrapper > table > .tbody > .row {
+    cursor: pointer;
+    &:nth-child(odd) {
+      background-color: rgba(0, 0, 0, 0.04);
     }
   }
 }

@@ -16,9 +16,12 @@
     "deploy:delete-staging-tag": "git fetch --tags && git push origin --delete $(git tag -l 'staging-*') || true && git fetch origin --prune 'refs/tags/*:refs/tags/*'"
   },
   "devDependencies": {
+    "@mdi/font": "^7.1.96",
     "nuxt": "3.0.0",
     "sass": "^1.57.1",
-    "sass-loader": "^13.2.0"
+    "sass-loader": "^13.2.0",
+    "vite-plugin-vuetify": "^1.0.1",
+    "vuetify": "^3.0.6"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",

@@ -1,37 +1,41 @@
+<script lang="ts" setup>
+import { useAppStore } from '@/store/app'
+import { Snackbar } from '~/types/App'
+
+const appStore = useAppStore()
+const snackbar = computed<Snackbar>(() => appStore.snackbar)
+</script>
+
 <template>
-  <div class="main-layout">
-    <layout-the-sidebar />
-    <layout-the-header />
-    <div class="content">
+  <v-app>
+    <v-navigation-drawer expand-on-hover rail rail-width="95" permanent>
+      <layout-the-sidebar />
+    </v-navigation-drawer>
+    <v-app-bar density="compact">
+      <layout-the-header />
+    </v-app-bar>
+    <v-main>
       <NuxtPage />
-    </div>
-    <layout-the-footer />
-  </div>
+    </v-main>
+    <v-app-bar location="bottom" height="50" elevation="0">
+      <layout-the-footer />
+    </v-app-bar>
+
+    <v-snackbar
+      v-model="snackbar.isShow"
+      :color="snackbar.status ? 'green' : 'red'"
+      timeout="2000"
+    >
+      {{ snackbar.message || snackbar.status ? 'Success' : 'Failed' }}
+      <template v-slot:actions>
+        <v-btn
+          color="white"
+          icon="mdi-close-circle-outline"
+          @click="appStore.snackbar.isShow = false"
+        ></v-btn>
+      </template>
+    </v-snackbar>
+  </v-app>
 </template>
 
-<style scoped lang="scss">
-.main-layout {
-  display: grid;
-  grid-template-areas:
-    'sidebar header'
-    'sidebar content'
-    'footer footer';
-  > .the-sidebar {
-    grid-area: sidebar;
-    width: 150px;
-  }
-  > .the-header {
-    grid-area: header;
-    height: 50px;
-    width: calc(100vw - 150px);
-  }
-  > .the-footer {
-    grid-area: footer;
-  }
-  > .content {
-    grid-area: content;
-    min-height: calc(100vh - 77px);
-    padding: 20px;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
