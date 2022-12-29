@@ -1,20 +1,37 @@
 <script lang="ts" setup>
+import { User } from '~/types/User'
+
 const props = defineProps(['user'])
 const emit = defineEmits(['addUser', 'saveUser', 'deleteUser', 'cancel'])
 
-const userInfo = ref({
+const isEdit = computed<boolean>(() => !!props.user.id)
+const title = computed<string>(() =>
+  isEdit.value ? 'Update user' : 'Add user'
+)
+
+const userInfo = ref<User>({
   ...(props.user.id && { id: props.user.id }),
   name: props.user.name ?? '',
   email: props.user.email ?? ''
 })
-const isEdit = computed(() => !!props.user.id)
-const title = computed(() => (isEdit.value ? 'Update user' : 'Add user'))
-const isValidForm = computed(() => {
-  const { name, email } = userInfo.value
-  return name !== '' && email !== ''
-})
 
-function saveUser() {
+const rules = {
+  name: [
+    (v: boolean | string) => !!v || 'Name is required',
+    (v: string) =>
+      (v && v.length <= 50) || 'Name must be less than 50 characters'
+  ],
+  email: [
+    (v: boolean | string) => !!v || 'E-mail is required',
+    (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+  ]
+}
+const validForm = true
+const formRef = ref(null)
+async function saveUser() {
+  const { valid } = await formRef.value.validate()
+  if (!valid) return false
+
   const action = isEdit.value ? 'saveUser' : 'addUser'
   const id = Math.random().toString().substring(2, 8)
   emit(action, { id, ...userInfo.value })
@@ -27,54 +44,49 @@ function deleteUser() {
 <template>
   <Teleport to="body">
     <transition name="fade">
-      <div class="modal">
-        <div class="content">
-          <h2 class="title">{{ title }}</h2>
-          <form class="form">
-            <div class="field" v-if="isEdit">
-              <label class="label">ID:</label>
-              <input
-                type="text"
-                class="input -readonly"
-                readonly
-                :value="userInfo.id"
-              />
-            </div>
-            <div class="field">
-              <label class="label">Name:</label>
-              <input
-                type="text"
-                class="input"
-                required
+      <div class="modal -overlay">
+        <v-card
+          class="content"
+          :prepend-icon="`mdi-account-${isEdit ? 'edit' : 'plus'}-outline`"
+        >
+          <template v-slot:title>
+            {{ title }}
+          </template>
+          <v-form ref="formRef" v-model="validForm">
+            <v-card-text>
+              <v-text-field
+                v-if="isEdit"
+                v-model="userInfo.id"
+                label="ID"
+                disabled
+              ></v-text-field>
+              <v-text-field
                 v-model="userInfo.name"
-              />
-            </div>
-            <div class="field">
-              <label class="label">Email:</label>
-              <input
-                type="email"
-                class="input"
+                :counter="50"
+                :rules="rules.name"
+                label="Name"
                 required
+              ></v-text-field>
+              <v-text-field
                 v-model="userInfo.email"
-              />
-            </div>
-          </form>
-          <div class="action">
-            <button
-              :class="['button -save', { '-disabled': !isValidForm }]"
-              :disabled="!isValidForm"
-              @click="saveUser"
-            >
-              {{ isEdit ? 'Save' : 'Add' }}
-            </button>
-            <button class="button -delete" v-if="isEdit" @click="deleteUser">
-              Delete
-            </button>
-            <button class="button -cancel" @click="emit('cancel')">
-              Cancel
-            </button>
-          </div>
-        </div>
+                :rules="rules.email"
+                label="E-mail"
+                required
+              ></v-text-field
+            ></v-card-text>
+            <v-divider class="mt-10"></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="emit('cancel')"> Cancel </v-btn>
+              <v-btn color="error" v-if="isEdit" @click="deleteUser">
+                Delete
+              </v-btn>
+              <v-btn color="primary" @click="saveUser">
+                {{ isEdit ? 'Save' : 'Add' }}
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
       </div>
     </transition>
   </Teleport>
@@ -82,16 +94,16 @@ function deleteUser() {
 
 <style lang="scss" scoped>
 .modal {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  &.-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1011;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   > .content {
     display: flex;
     flex-direction: column;
@@ -102,60 +114,8 @@ function deleteUser() {
     border-radius: 0.5rem;
     animation: scale 0.5s;
   }
-  > .content .title {
-    margin-bottom: 1rem;
-  }
-  .content > .form {
-    font-size: 2.5rem;
-  }
-  .content > .form > .field {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-    > .label {
-      min-width: 3.5rem;
-      font-size: 1.2rem;
-    }
-    > .input {
-      flex: 1;
-      padding: 10px 5px;
-      &.-readonly {
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    }
-  }
-  .content > .action {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-  .content > .action > .button {
-    padding: 0.5rem 1.5rem;
-    border-radius: 3px;
-    border: none;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
-    &.-save {
-      background-color: #0d6efd;
-    }
-    &.-delete {
-      background-color: #ff0000;
-    }
-    &.-cancel {
-      background-color: #808080;
-    }
-    &.-disabled {
-      background-color: #c6c6c6;
-    }
-  }
 }
+
 @keyframes scale {
   0% {
     transform: scale(0) skew(50deg, 35deg);

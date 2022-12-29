@@ -1,10 +1,5 @@
 <template>
-  <div class="the-footer">This is footer</div>
+  <v-footer class="the-footer border-t-sm">
+    {{ new Date().getFullYear() }} — <strong>Abothellona</strong>
+  </v-footer>
 </template>
-
-<style lang="scss" scoped>
-.the-footer {
-  padding: 10px 0;
-  background-color: #ccc;
-}
-</style>
