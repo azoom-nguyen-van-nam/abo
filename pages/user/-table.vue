@@ -7,8 +7,8 @@
         @click="openUserDialog({})"
       ></v-btn>
       <v-spacer></v-spacer>
-      <v-autocomplete
-        v-model="userSearch"
+      <v-combobox
+        v-model:search="textSearch"
         :items="userStore.users"
         item-title="name"
         return-object
@@ -16,36 +16,47 @@
         clearable
         open-on-clear
         variant="underlined"
-        prepend-inner-icon="mdi-magnify"
+        append-icon="mdi-magnify"
         no-data-text="Not found"
         class="search"
+        @click:append="searchUsers"
       >
-      </v-autocomplete>
+        <v-list>
+          <template v-slot:item="{ item }">
+            <v-list-item @click="openUserDialog(item)">
+              {{ item.title }}
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-combobox>
     </div>
-    <v-table :hover="true" class="table">
-      <thead class="thead text-left">
-        <tr class="row">
-          <th class="col">ID</th>
-          <th class="col">Name</th>
-          <th class="col">Email</th>
-          <th class="col">Role</th>
-        </tr>
-      </thead>
-      <tbody class="tbody">
-        <tr
-          class="row"
-          v-for="user in userStore.users"
-          :key="user.id"
-          @click="openUserDialog(user)"
-        >
-          <td class="col">{{ user.id }}</td>
-          <td class="col">{{ user.name }}</td>
-          <td class="col">{{ user.email }}</td>
-          <td class="col">{{ formatRole(user.role) }}</td>
-        </tr>
-      </tbody>
-    </v-table>
-    <label class="count float-right mt-3">Count: {{ userCount }}</label>
+    <template v-if="userCount">
+      <v-table :hover="true" class="table">
+        <thead class="thead text-left">
+          <tr class="row">
+            <th class="col">ID</th>
+            <th class="col">Name</th>
+            <th class="col">Email</th>
+            <th class="col">Role</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr
+            class="row"
+            v-for="user in userStore.users"
+            :key="user.id"
+            @click="openUserDialog(user)"
+          >
+            <td class="col">{{ user.id }}</td>
+            <td class="col">{{ user.name }}</td>
+            <td class="col">{{ user.email }}</td>
+            <td class="col">{{ formatRole(user.role) }}</td>
+          </tr>
+        </tbody>
+      </v-table>
+      <label class="count float-right mt-3">Count: {{ userCount }}</label>
+    </template>
+    <NoData v-else />
     <UserDialog
       v-if="isShowDialog"
       :user="selectedUser"
@@ -66,14 +77,10 @@ const userStore = useUserStore()
 await userStore.getUsers({})
 
 const userCount = computed<number>(() => userStore.users.length)
-const isShowDialog = ref(false)
+const isShowDialog = ref<boolean>(false)
 const selectedUser = ref({})
 
-const userSearch = ref(null)
-watch(userSearch, (newVal) => {
-  if (!newVal) return
-  openUserDialog(newVal)
-})
+const textSearch = ref<string>('')
 
 function openUserDialog(user: User | object) {
   selectedUser.value = user
@@ -126,11 +133,14 @@ function getErrorMessage(error: unknown): string {
   }
   return String(error)
 }
+
+function searchUsers() {
+  userStore.getUsers({ ...(textSearch.value && { name: textSearch.value }) })
+}
 </script>
 
 <style scoped lang="scss">
 .user-list {
-  position: relative;
   > .heading {
     display: flex;
     justify-content: space-between;
