@@ -99,7 +99,7 @@ function deleteUser() {
   align-items: center;
   justify-content: center;
   &.-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: 1011;
     background-color: rgba(0, 0, 0, 0.5);
