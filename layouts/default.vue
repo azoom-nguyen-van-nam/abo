@@ -8,7 +8,7 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
 
 <template>
   <v-app>
-    <v-navigation-drawer expand-on-hover rail rail-width="95" permanent>
+    <v-navigation-drawer expand-on-hover rail permanent>
       <layout-the-sidebar />
     </v-navigation-drawer>
     <v-app-bar density="compact">
