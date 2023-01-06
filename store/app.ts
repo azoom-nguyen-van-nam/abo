@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { MetaObject } from '#app'
-import { Snackbar } from '~/types/App'
+import { Snackbar } from '~~/types/app'
 
 type AppState = {
   meta: any

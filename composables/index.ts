@@ -1,6 +1,6 @@
-import { useAppStore } from '@/store/app'
 import { MetaObject } from '#app'
-import { Snackbar } from '~/types/App'
+import { useAppStore } from '@/store/app'
+import { Snackbar, Menu } from '~~/types/app'
 
 export const useRefHead = (meta: MetaObject) => {
   const appStore = useAppStore()
@@ -18,3 +18,11 @@ export const useSnackbar = (snackbar?: Snackbar) => {
   } = snackbar ?? {}
   appStore.snackbar = { isShow, status, message, ...(color && { color }) }
 }
+
+export const useMenus = () =>
+  useState<Menu[]>('Menus', () => {
+    return [
+      { id: 0, label: 'Home', icon: 'mdi-home', router: '/' },
+      { id: 1, label: 'Booking', icon: 'mdi-home', router: '/booking' }
+    ]
+  })
