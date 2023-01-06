@@ -1,15 +1,5 @@
-<script lang="ts" setup>
-useRefHead({
-  title: 'Home',
-  meta: [
-    {
-      name: 'description',
-      content: 'Home page'
-    }
-  ]
-})
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <NoData />
+  <h1>Home page</h1>
 </template>

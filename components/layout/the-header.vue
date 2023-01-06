@@ -2,10 +2,10 @@
   <div class="the-header w-100">
     <p class="title">{{ appStore.meta.title }}</p>
     <v-menu transition="scale-transition">
-      <template v-slot:activator="{ props }">
+      <template #activator="{ props }">
         <div class="account d-flex align-center" v-bind="props">
-          <v-avatar image="https://picsum.photos/50" size="35"></v-avatar>
-          <span class="name">{{ authStore.loggedInUser.name }}</span>
+          <v-avatar></v-avatar>
+          <span class="name">Abo admin</span>
         </div>
       </template>
       <v-list>
@@ -25,10 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useAuthStore } from '@/store/auth'
 import { useAppStore } from '@/store/app'
 
-const authStore = useAuthStore()
 const appStore = useAppStore()
 
 type UserOption = {

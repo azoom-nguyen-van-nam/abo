@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/store/app'
-import { Snackbar } from '~/types/App'
+import { Snackbar } from '~~/types/app'
 
 const appStore = useAppStore()
 const snackbar = computed<Snackbar>(() => appStore.snackbar)
@@ -8,7 +8,7 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
 
 <template>
   <v-app>
-    <v-navigation-drawer expand-on-hover rail rail-width="95" permanent>
+    <v-navigation-drawer expand-on-hover rail rail-width="125" permanent>
       <layout-the-sidebar />
     </v-navigation-drawer>
     <v-app-bar density="compact">
@@ -27,7 +27,7 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
       timeout="2000"
     >
       {{ snackbar.message || snackbar.status ? 'Success' : 'Failed' }}
-      <template v-slot:actions>
+      <template #actions>
         <v-btn
           color="white"
           icon="mdi-close-circle-outline"

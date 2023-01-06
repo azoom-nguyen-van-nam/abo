@@ -6,12 +6,15 @@
       width="5"
       color="white"
     ></v-progress-circular>
-    <strong class="message mt-2" v-if="message">{{ message }}</strong>
+    <strong v-if="message" class="message mt-2">{{ message }}</strong>
   </div>
 </template>
-<script setup>
+<script lang="ts" setup>
 defineProps({
-  message: String
+  message: {
+    type: String,
+    default: ''
+  }
 })
 </script>
 

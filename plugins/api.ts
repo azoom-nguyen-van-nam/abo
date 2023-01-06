@@ -1,34 +1,15 @@
 import ky from 'ky-universal'
-import { Pinia } from 'pinia'
-import { navigateToDefaultRouter } from '@/middleware/redirect'
-import { useAuthStore } from '@/store/auth'
 
 export const useApi: any = {}
 
-export default defineNuxtPlugin(({ $config, $pinia, $route }) => {
-  useApi.aboApi = createAPI($config.public.API_BASE_URL, $pinia)
+export default defineNuxtPlugin(({ $config }) => {
+  useApi.aboApi = createAPI($config.public.API_BASE_URL)
 })
 
-const createAPI = (baseURL: string, $pinia: Pinia) => {
-  const { loggedInUser } = useAuthStore($pinia)
-
-  return ky.create({  
+const createAPI = (baseURL: string) => {
+  return ky.create({
     prefixUrl: baseURL,
     timeout: 30000,
-    credentials: 'include',
-    hooks: {
-      beforeRequest: [
-        (req) => {
-          req.headers.set('Authorization', loggedInUser.token)
-        }
-      ],
-      afterResponse: [
-        (req, options, res) => {
-          if ([401, 403].includes(res.status) && process.client) {
-            navigateToDefaultRouter()
-          }
-        }
-      ]
-    }
+    credentials: 'include'
   })
 }

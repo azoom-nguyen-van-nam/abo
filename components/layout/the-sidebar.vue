@@ -1,20 +1,15 @@
 <script setup>
-const menus = ref([
-  { label: 'Home', icon: 'mdi-home', to: '/' },
-  { label: 'User', icon: 'mdi-account-outline', to: '/user' }
-])
+const menus = useMenus()
 </script>
 
 <template>
   <nav class="the-sidebar">
-    <nuxt-link to="/">
-      <img class="the-logo" src="/logo.jpeg" alt="abo-logo" width="50" />
-    </nuxt-link>
+    <nuxt-link to="/"> Logo </nuxt-link>
     <nuxt-link
       v-for="menu in menus"
-      :key="new Date().getTime()"
-      :to="menu.to"
-      class="route d-flex justify-center align-center"
+      :key="menu.id"
+      :to="menu.router"
+      class="route d-flex justify-start align-start"
     >
       <v-icon :icon="menu.icon" class="mr-2" />
       {{ menu.label }}
