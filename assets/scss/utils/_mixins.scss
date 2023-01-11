@@ -1,0 +1,66 @@
+@import './variables';
+/*==================================================
+MEDIA
+==================================================*/
+
+@mixin xs {
+  @media (max-width: #{$screen-xs}) {
+    @content;
+  }
+}
+@mixin sm {
+  @media (min-width: #{$screen-xs + 1}) and (max-width: #{$screen-sm}) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: #{$screen-sm + 1}) and (max-width: #{$screen-md}) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: #{$screen-md + 1}) and (max-width: #{$screen-lg}) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: #{$screen-lg + 1}) {
+    @content;
+  }
+}
+/*==================================================
+Override Vuetify
+==================================================*/
+
+@mixin abo-input {
+  --v-input-control-height: #{$v-input-control-height};
+  &:deep(.v-field__input) {
+    color: #333333;
+    --v-field-padding-bottom: #{$v-field-padding-bottom};
+  }
+  &:deep(.v-field--variant-outlined) {
+    --v-input-padding-top: #{$v-input-padding-top};
+  }
+  @content;
+}
+
+@mixin abo-select($color: #{$abo-primary-color}) {
+  --v-input-control-height: #{$v-input-control-height + 4};
+  &:deep(.v-field__input) {
+    color: #333333;
+    --v-field-padding-bottom: #{$v-field-padding-bottom};
+  }
+  &:deep(.v-field--variant-outlined) {
+    --v-input-padding-top: #{$v-input-padding-top};
+  }
+  @include clearable-icon(0, $color);
+  @content;
+}
+
+@mixin clearable-icon($margin-top: 0, $color: #{$abo-primary-color}) {
+  &:deep(.v-field__clearable) {
+    margin-top: $margin-top;
+    color: $color;
+    @content;
+  }
+}

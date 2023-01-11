@@ -1,4 +1,14 @@
-$az-primary-color: #71a1c9;
-$az-error-color: #ea5c67;
-$az-warning-color: #fd8c00;
-$az-success-color: #01b294;
+// Colors
+$abo-primary-color: #284e68;
+$abo-background-default: #f9f9f7;
+
+// Media queries
+$screen-xs: 600px;
+$screen-sm: 768px;
+$screen-md: 992px;
+$screen-lg: 1200px;
+
+// Override Vuetify
+$v-input-control-height: 40px;
+$v-field-padding-bottom: 10px;
+$v-input-padding-top: 10px;

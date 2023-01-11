@@ -24,8 +24,14 @@ export default defineNuxtConfig({
     transpile: ['vuetify']
   },
   vite: {
-    ssr: {
-      noExternal: ['vuetify']
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `
+            @import "@/assets/scss/utils/mixins";
+          `
+        }
+      }
     }
   },
   runtimeConfig: {
