@@ -6,10 +6,11 @@ export interface Snackbar {
 }
 
 export interface Menu {
-  id: number
+  id?: number
   label: string
-  router: string
-  icon: string
+  router?: string
+  icon?: string,
+  children?: Menu[]
 }
 
 export interface DataTableHeader {

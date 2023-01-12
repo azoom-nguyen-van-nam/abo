@@ -1,11 +1,13 @@
 <template>
-  <div class="the-header w-100">
-    <p class="title">{{ appStore.meta.title }}</p>
+  <div class="the-header">
+    <nuxt-link to="/" class="logo">
+      <v-img src="images/logo.png" width="200" :aspect-ratio="1"></v-img>
+    </nuxt-link>
     <v-menu transition="scale-transition">
       <template #activator="{ props }">
         <div class="account d-flex align-center" v-bind="props">
-          <v-avatar></v-avatar>
-          <span class="name">Abo admin</span>
+          <v-icon icon="mdi-account-outline"> </v-icon>
+          <span class="name">Abo Admin</span>
         </div>
       </template>
       <v-list>
@@ -25,10 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '@/store/app'
-
-const appStore = useAppStore()
-
 type UserOption = {
   icon: string
   title: string
@@ -53,10 +51,8 @@ const userOptions: Array<UserOption> = [
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 0 10px;
-  > .title {
-    font-weight: bold;
-  }
   > .account {
     gap: 0.5rem;
   }
