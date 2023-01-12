@@ -22,7 +22,61 @@ export const useSnackbar = (snackbar?: Snackbar) => {
 export const useMenus = () =>
   useState<Menu[]>('Menus', () => {
     return [
-      { id: 0, label: 'Home', icon: 'mdi-home', router: '/' },
-      { id: 1, label: 'Booking', icon: 'mdi-home', router: '/booking' }
+      {
+        label: '当日業務',
+        icon: 'mdi-home-city-outline',
+        children: [
+          {
+            label: '予約登録',
+            router: '/coming-soon',
+          },
+          {
+            label: '予約照会',
+            router: '/coming-soon'
+          },
+          {
+            label: 'ロビー売上登録',
+            router: '/coming-soon'
+          },
+          {
+            label: '精算',
+            router: '/coming-soon'
+          }
+        ]
+      },
+      {
+        label: 'マスター登録',
+        icon: 'mdi-account-cog-outline',
+        children: [
+          {
+            label: '予約一覧',
+            router: '/bookings'
+          },
+          {
+            label: '売上一覧',
+            router: '/coming-soon'
+          },
+          {
+            label: '帳票一覧',
+            router: '/coming-soon'
+          },
+          {
+            label: '顧客一覧',
+            router: '/customers'
+          },
+          {
+            label: '商品一覧',
+            router: '/fittings'
+          },
+          {
+            label: '会議室一覧',
+            router: '/rooms'
+          },
+          {
+            label: '担当者一覧',
+            router: '/staffs'
+          },
+        ]
+      },
     ]
   })

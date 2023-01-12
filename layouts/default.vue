@@ -7,26 +7,25 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
 </script>
 
 <template>
-  <v-app>
-    <v-navigation-drawer expand-on-hover rail rail-width="125" permanent>
-      <layout-the-sidebar />
-    </v-navigation-drawer>
-    <v-app-bar density="compact">
+  <v-app class="default-layout">
+    <v-app-bar>
       <layout-the-header />
     </v-app-bar>
-    <v-main>
-      <NuxtPage />
+    <v-navigation-drawer rail rail-width="250" permanent color="primary">
+      <layout-the-sidebar />
+    </v-navigation-drawer>
+    <v-main class="main">
+      <div class="content pa-5">
+        <NuxtPage />
+      </div>
     </v-main>
-    <v-app-bar location="bottom" height="50" elevation="0">
-      <layout-the-footer />
-    </v-app-bar>
 
     <v-snackbar
       v-model="snackbar.isShow"
       :color="snackbar.status ? 'green' : 'red'"
       timeout="2000"
     >
-      {{ snackbar.message || snackbar.status ? 'Success' : 'Failed' }}
+      {{ snackbar.message || (snackbar.status ? 'Success' : 'Failed') }}
       <template #actions>
         <v-btn
           color="white"
@@ -38,4 +37,10 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
   </v-app>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.default-layout {
+  > :deep(.v-application__wrap) > .v-navigation-drawer {
+    box-shadow: 3px 0 10px 0 rgb(0 0 0 / 50%);
+  }
+}
+</style>

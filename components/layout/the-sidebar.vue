@@ -3,38 +3,67 @@ const menus = useMenus()
 </script>
 
 <template>
-  <nav class="the-sidebar">
-    <nuxt-link to="/"> Logo </nuxt-link>
-    <nuxt-link
-      v-for="menu in menus"
-      :key="menu.id"
-      :to="menu.router"
-      class="route d-flex justify-start align-start"
-    >
-      <v-icon :icon="menu.icon" class="mr-2" />
-      {{ menu.label }}
-    </nuxt-link>
-  </nav>
+  <v-list class="the-sidebar">
+    <template v-for="menu in menus" :key="menu.router">
+      <v-list-item
+        v-if="!menu.children"
+        :prepend-icon="menu.icon"
+        :title="menu.label"
+        :to="menu.router"
+        class="route"
+      ></v-list-item>
+      <v-list-group v-else :value="menu.label">
+        <template v-slot:activator="{ props }">
+          <v-list-item
+            v-bind="props"
+            :title="menu.label"
+            :prepend-icon="menu.icon"
+            class="route"
+          ></v-list-item>
+        </template>
+        <v-list-item
+          v-for="m in menu.children"
+          :key="m.router"
+          :title="m.label"
+          :to="m.router"
+          class="route"
+        ></v-list-item>
+      </v-list-group>
+    </template>
+  </v-list>
 </template>
 
 <style scoped lang="scss">
 .the-sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  > .route {
-    width: 100%;
-    text-align: center;
-    text-decoration: none;
-    padding: 10px;
-    color: #000;
-    transition: 0.5s;
-    &:hover,
-    &.router-link-active {
-      color: #2c2cc8;
-      background-color: #d2eaf2;
+  > .v-list-group > .v-list-group__items > .route {
+    color: #94a6b4;
+  }
+  > .route,
+  > .v-list-group > .v-list-group__items > .route {
+    &.v-list-item--active {
+      color: #fff;
+      :deep(.v-list-item__overlay) {
+        background-color: #50abf9;
+      }
     }
   }
+  > .v-list-item,
+  > .v-list-group > .v-list-item,
+  > .v-list-group > .v-list-group__items > .v-list-item {
+    :deep(.v-list-item__overlay) {
+      @extend .rounded-e-tb;
+    }
+  }
+  > .v-list-group > .v-list-item,
+  > .v-list-group > .v-list-group__items > .v-list-item {
+    > :deep(.v-ripple__container) {
+      @extend .rounded-e-tb;
+      overflow: hidden;
+    }
+  }
+}
+.rounded-e-tb {
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
 }
 </style>
