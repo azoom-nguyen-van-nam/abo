@@ -1,7 +1,7 @@
 <template>
   <div class="the-header">
     <nuxt-link to="/" class="logo">
-      <v-img src="images/logo.png" width="200" :aspect-ratio="1"></v-img>
+      <v-img src="/images/logo.png" width="200" :aspect-ratio="1"></v-img>
     </nuxt-link>
     <v-menu transition="scale-transition">
       <template #activator="{ props }">

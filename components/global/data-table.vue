@@ -56,7 +56,7 @@ const currentItemsPerPage = reactive<ItemPerPage>({
 const itemsCount = computed<number>(() => props.items.length)
 const itemsDisplay = computed<Array<DataTableItem>>(() => {
   const { value: ipp } = currentItemsPerPage
-  if (ipp === -1) return props.items
+  if (ipp === -1 || props.hideDefaultFooter) return props.items
 
   const startNum = (currentPage.value - 1) * ipp
   return props.items.slice(startNum, startNum + ipp)
@@ -156,6 +156,9 @@ watch(
                 { divider: !!header.divider },
                 header.align && `text-${header.align}`
               ]"
+              :style="{
+                width: Number(header.width) ? `${header.width}px` : header.width
+              }"
             >
               <slot
                 v-if="!!slots[`item.${[header.value]}`]"
@@ -242,6 +245,9 @@ $stickyLength: v-bind(stickyLength);
       display: block;
       max-height: $stickyLength;
       overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
   > .thead {
