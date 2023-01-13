@@ -23,6 +23,20 @@ const props = defineProps({
     type: Number,
     default: 10
   },
+  stickyHeight: {
+    type: [String, Number],
+    validator(value: string | number) {
+      return /^\d+(px|em|rem|%|vw|vh)?$/.test(value.toString())
+    }
+  },
+  noDataText: {
+    type: String,
+    default: 'No data'
+  },
+  actionsText: {
+    type: String,
+    default: ''
+  },
   hideDefaultFooter: Boolean
 })
 const emit = defineEmits(['click:row', 'dblclick:row', 'onChangePagination'])
@@ -63,6 +77,11 @@ const paginationText = computed<string>(() => {
 const pageCount = computed<number>(() =>
   calculateTotalPage(itemsCount.value, currentItemsPerPage.value)
 )
+const stickyLength = computed<string>(() => {
+  const height = props.stickyHeight
+  if (!height) return ''
+  return Number(height) ? `${height}px` : `${height}`
+})
 
 function changeItemsPerPage({ title, value }: ItemPerPage): void {
   currentPage.value = 1
@@ -99,7 +118,7 @@ watch(
 
 <template>
   <div class="abo-table-wrap">
-    <table class="abo-table">
+    <table :class="['abo-table', { 'sticky-header': !!stickyHeight }]">
       <thead class="thead">
         <tr class="row">
           <th
@@ -117,39 +136,50 @@ watch(
           >
             {{ header.text }}
           </th>
-          <th v-if="!!slots.actions" class="col">Actions</th>
+          <th v-if="!!slots.actions" class="col">{{ actionsText }}</th>
         </tr>
       </thead>
       <tbody class="tbody">
-        <tr
-          v-for="(item, index) in itemsDisplay"
-          :key="index + randomKey()"
-          class="row"
-          @click="emit('click:row', item)"
-          @dblclick="emit('dblclick:row', item)"
-        >
-          <td
-            v-for="header in headers"
-            :key="header.value"
-            :class="['col', { divider: !!header.divider }]"
+        <template v-if="itemsCount">
+          <tr
+            v-for="(item, index) in itemsDisplay"
+            :key="index + randomKey()"
+            class="row"
+            @click="emit('click:row', item)"
+            @dblclick="emit('dblclick:row', item)"
           >
-            <slot
-              v-if="!!slots[`item.${[header.value]}`]"
-              :name="`item.${[header.value]}`"
-              :item="item"
-            ></slot>
-            <template v-else>
-              {{ item[header.value] }}
-            </template>
-          </td>
-          <td v-if="!!slots.actions" class="col">
-            <slot name="actions" :item="item"></slot>
-          </td>
+            <td
+              v-for="header in headers"
+              :key="header.value"
+              :class="[
+                'col',
+                { divider: !!header.divider },
+                header.align && `text-${header.align}`
+              ]"
+            >
+              <slot
+                v-if="!!slots[`item.${[header.value]}`]"
+                :name="`item.${[header.value]}`"
+                :item="item"
+              ></slot>
+              <template v-else>
+                {{ item[header.value] }}
+              </template>
+            </td>
+            <td v-if="!!slots.actions" class="col">
+              <slot name="actions" :item="item"></slot>
+            </td>
+          </tr>
+        </template>
+        <tr v-else class="row">
+          <th :colspan="headers.length" class="col text-center py-5">
+            {{ noDataText }}
+          </th>
         </tr>
       </tbody>
     </table>
     <div
-      v-if="!hideDefaultFooter"
+      v-if="!hideDefaultFooter && itemsCount"
       class="abo-table-footer d-flex justify-end align-center"
     >
       <div class="d-flex align-center ml-auto">
@@ -161,6 +191,7 @@ watch(
           item-value="value"
           return-object
           hide-details
+          :clearable="false"
           variant="underlined"
           density="compact"
           class="select ml-5"
@@ -192,13 +223,26 @@ watch(
 
 <style lang="scss" scoped>
 $borderColor: #0000001f;
-
+$stickyLength: v-bind(stickyLength);
 .abo-table {
   width: 100%;
   border-spacing: 0;
   > &-wrap {
     background-color: #fff;
     color: #000000de;
+  }
+  &.sticky-header {
+    > .thead,
+    > .tbody > .row {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+    > .tbody {
+      display: block;
+      max-height: $stickyLength;
+      overflow-y: scroll;
+    }
   }
   > .thead {
     height: 48px;
@@ -227,7 +271,7 @@ $borderColor: #0000001f;
 .abo-table-footer {
   font-size: 0.75rem;
   border-top: thin solid $borderColor;
-  :v-deep(.select) {
+  :deep(.select) {
     .v-field {
       font-size: 0.75rem !important;
       &__input {
