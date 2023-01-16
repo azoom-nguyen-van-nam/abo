@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import StaffService from '~~/models/staff'
-import { Staff, NewStaff, SearchStaffQuerry } from '~~/types/staff'
+import {
+  Staff,
+  NewStaff,
+  SearchStaffQuerry,
+  GetStaffsRequest
+} from '~~/types/staff'
 
 type StaffState = {
   staffs: Staff[]
@@ -12,7 +17,9 @@ export const useStaffStore = defineStore('staff', {
   }),
 
   actions: {
-    async getStaffs(query: SearchStaffQuerry): Promise<void> {
+    async getStaffs(
+      query: SearchStaffQuerry | GetStaffsRequest
+    ): Promise<void> {
       Object.keys(query).forEach((key: string) =>
         !query[key as keyof SearchStaffQuerry]
           ? delete query[key as keyof SearchStaffQuerry]

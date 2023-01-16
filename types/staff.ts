@@ -20,3 +20,12 @@ export interface SearchStaffQuerry {
   department?: number
   position?: number
 }
+
+export class GetStaffsRequest {
+  id?: number
+  name?: string
+  nameKana?: string
+  isDeleted?: boolean
+  department?: number | string | null
+  position?: number | string | null
+}

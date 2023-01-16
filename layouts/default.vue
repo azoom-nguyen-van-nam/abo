@@ -20,18 +20,10 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
       </div>
     </v-main>
 
-    <v-snackbar
-      v-model="snackbar.isShow"
-      :color="snackbar.status ? 'green' : 'red'"
-      timeout="2000"
-    >
+    <v-snackbar v-model="snackbar.isShow" :color="snackbar.status ? 'green' : 'red'" timeout="2000">
       {{ snackbar.message || (snackbar.status ? 'Success' : 'Failed') }}
       <template #actions>
-        <v-btn
-          color="white"
-          icon="mdi-close-circle-outline"
-          @click="appStore.snackbar.isShow = false"
-        ></v-btn>
+        <v-btn color="white" icon="mdi-close-circle-outline" @click="appStore.snackbar.isShow = false"></v-btn>
       </template>
     </v-snackbar>
   </v-app>

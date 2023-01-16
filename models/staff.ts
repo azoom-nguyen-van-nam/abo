@@ -1,8 +1,8 @@
 import { useApi } from '~~/plugins/api'
-import { NewStaff, Staff, SearchStaffQuerry } from '~~/types/staff'
+import { NewStaff, Staff, SearchStaffQuerry, GetStaffsRequest } from '~~/types/staff'
 
 export default class StaffService {
-  static getStaffs = async (searchParams: SearchStaffQuerry) => {
+  static getStaffs = async (searchParams: SearchStaffQuerry | GetStaffsRequest) => {
     return useApi.aboApi.get(`staffs`, { searchParams }).json()
   }
   static createStaff = (staff: NewStaff) => {

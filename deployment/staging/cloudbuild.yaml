@@ -29,9 +29,9 @@ steps:
           --platform managed \
 substitutions:
   _ENV: staging
-  _SECRET_NAME: abo
-  _PROJECT_ID: azoom-n-d-phong
+  _SECRET_NAME: smaku-abo
+  _PROJECT_ID: staging-smaku-abo
   _DECRYPTED_ENV_FILE_LOCATION: ./.env
   _APP_DOCKER_FILE: ./deployment/Dockerfile
-  _CLOUD_RUN_SERVICE_NAME: staging-abo
+  _CLOUD_RUN_SERVICE_NAME: staging-smaku-abo
 timeout: 900s
