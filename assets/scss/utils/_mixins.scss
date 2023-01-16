@@ -64,3 +64,12 @@ Override Vuetify
     @content;
   }
 }
+
+@mixin sticky-toolbar {
+  &:deep(.v-toolbar) {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    @content;
+  }
+}
