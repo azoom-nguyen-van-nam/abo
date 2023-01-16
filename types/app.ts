@@ -9,7 +9,7 @@ export interface Menu {
   id?: number
   label: string
   router?: string
-  icon?: string,
+  icon?: string
   children?: Menu[]
 }
 
@@ -29,4 +29,19 @@ export type DataTableItem = {
 export type ItemPerPage = {
   title: number | string
   value: number
+}
+
+export type ItemsPerPageOption = {
+  [key: string]: ItemPerPage
+}
+
+export type ItemVSelection = {
+  title: string
+  value: number | string
+}
+
+export type Pagination = {
+  total: number
+  page: number
+  totalPages: number
 }
