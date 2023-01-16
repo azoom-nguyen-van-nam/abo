@@ -30,7 +30,7 @@ steps:
 substitutions:
   _ENV: staging
   _SECRET_NAME: abo
-  _PROJECT_ID: azoom-n-d-phong
+  _PROJECT_ID: staging-smaku-abo
   _DECRYPTED_ENV_FILE_LOCATION: ./.env
   _APP_DOCKER_FILE: ./deployment/Dockerfile
   _CLOUD_RUN_SERVICE_NAME: staging-abo
