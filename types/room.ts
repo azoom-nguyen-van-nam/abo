@@ -1,14 +1,15 @@
 export interface Room {
-  id: number
+  id?: number
+  isDelete?: boolean | 0 | 1
   name?: string
-  roomNumber: number | string
+  roomNumber?: number | string
   basicPrice?: number
   overPrice?: number
   fullDayPrice?: number
+  mouthShapeCapacity?: number
   sShapeCapacity?: number
-  mountShapeCapacity?: number
   theaterShapeCapacity?: number
-  isWithoutTax?: boolean
+  isWithoutTax?: boolean | 0 | 1
 }
 
 export interface GetRoomsRequest {

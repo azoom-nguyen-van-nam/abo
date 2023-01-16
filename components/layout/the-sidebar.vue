@@ -35,14 +35,35 @@ const menus = useMenus()
 
 <style scoped lang="scss">
 .the-sidebar {
-  > .v-list-group > .v-list-group__items > .route {
-    color: #94a6b4;
+  > .v-list-group {
+    > .v-list-item {
+      > :deep(.v-list-item__prepend) > .v-icon {
+        margin-inline-end: 15px;
+      }
+      > :deep(.v-list-item__append) > .v-icon {
+        margin-inline-start: 10px;
+      }
+    }
+    > .v-list-group__items > .route {
+      color: #94a6b4;
+      padding-inline-start: var(--indent-padding) !important;
+    }
+    > .v-list-item,
+    > .v-list-group__items > .v-list-item {
+      > :deep(.v-ripple__container) {
+        @extend .rounded-e-tb;
+        overflow: hidden;
+      }
+    }
   }
   > .route,
   > .v-list-group > .v-list-group__items > .route {
     &.v-list-item--active {
-      color: #fff;
-      :deep(.v-list-item__overlay) {
+      > :deep(.v-list-item__content) > .v-list-item-title {
+        color: #fff;
+        font-weight: 600;
+      }
+      > :deep(.v-list-item__overlay) {
         background-color: #50abf9;
       }
     }
@@ -52,13 +73,6 @@ const menus = useMenus()
   > .v-list-group > .v-list-group__items > .v-list-item {
     :deep(.v-list-item__overlay) {
       @extend .rounded-e-tb;
-    }
-  }
-  > .v-list-group > .v-list-item,
-  > .v-list-group > .v-list-group__items > .v-list-item {
-    > :deep(.v-ripple__container) {
-      @extend .rounded-e-tb;
-      overflow: hidden;
     }
   }
 }

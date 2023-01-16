@@ -3,3 +3,8 @@ export const roomLayouts = {
   2: '口型',
   3: 'シアター型'
 }
+
+export const taxStatus = {
+  0: '内税',
+  1: '外税'
+}
