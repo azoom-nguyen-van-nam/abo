@@ -1,4 +1,5 @@
 import { createVuetify, ThemeDefinition } from 'vuetify'
+import { VTextarea } from 'vuetify/components'
 import '@mdi/font/css/materialdesignicons.css'
 
 const defaultTheme: ThemeDefinition = {
@@ -21,6 +22,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         defaultTheme
       }
     },
+    components: {
+      VTextarea
+    },
     defaults: {
       VBtn: {
         color: 'primary',
@@ -40,6 +44,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         hideDetails: 'auto',
         color: 'primary'
       },
+      VAutocomplete: {
+        hideDetails: 'auto',
+        color: 'primary',
+        clearable: true
+      },
       VRadio: {
         hideDetails: 'auto',
         color: 'primary'
@@ -55,6 +64,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       },
       VCard: {
         color: 'background'
+      },
+      VTextarea: {
+        hideDetails: 'auto'
       }
     }
   })
