@@ -211,7 +211,7 @@ async function saveRoom() {
           </v-col></v-row
         >
       </v-card-text>
-      <v-card-actions class="d-flex justify-center pb-3">
+      <v-card-actions class="justify-center pb-3">
         <v-btn
           size="large"
           color="primary"
