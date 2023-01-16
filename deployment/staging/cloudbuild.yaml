@@ -5,14 +5,14 @@ steps:
     args:
       - '-c'
       - |
-        gcloud secrets versions access latest --project=${_PROJECT_ID} --secret=${_ENV}-${_SECRET_NAME} --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ${_DECRYPTED_ENV_FILE_LOCATION}
+        gcloud secrets versions access latest --project=${PROJECT_ID} --secret=${_ENV}-${_SECRET_NAME} --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ${_DECRYPTED_ENV_FILE_LOCATION}
   - id: 'build-app-image'
     name: 'gcr.io/kaniko-project/executor:latest'
     waitFor: ['prepare-secret']
     args:
       - --dockerfile=${_APP_DOCKER_FILE}
-      - --destination=gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_SERVICE_NAME}:latest
-      - --destination=gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_SERVICE_NAME}:$TAG_NAME
+      - --destination=gcr.io/${PROJECT_ID}/${_CLOUD_RUN_SERVICE_NAME}:latest
+      - --destination=gcr.io/${PROJECT_ID}/${_CLOUD_RUN_SERVICE_NAME}:$TAG_NAME
       - --cache=true
       - --cache-ttl=336h
   - id: 'deploy-app'
@@ -23,14 +23,13 @@ steps:
       - '-c'
       - |
         gcloud run deploy ${_CLOUD_RUN_SERVICE_NAME} \
-          --image gcr.io/$_PROJECT_ID/${_CLOUD_RUN_SERVICE_NAME}:latest \
+          --image gcr.io/$PROJECT_ID/${_CLOUD_RUN_SERVICE_NAME}:latest \
           --allow-unauthenticated \
           --region asia-northeast1 \
           --platform managed \
 substitutions:
   _ENV: staging
   _SECRET_NAME: abo
-  _PROJECT_ID: staging-smaku-abo
   _DECRYPTED_ENV_FILE_LOCATION: ./.env
   _APP_DOCKER_FILE: ./deployment/Dockerfile
   _CLOUD_RUN_SERVICE_NAME: staging-abo
