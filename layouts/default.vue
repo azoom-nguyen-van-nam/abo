@@ -11,7 +11,7 @@ const snackbar = computed<Snackbar>(() => appStore.snackbar)
     <v-app-bar>
       <layout-the-header />
     </v-app-bar>
-    <v-navigation-drawer rail rail-width="250" permanent color="primary">
+    <v-navigation-drawer rail rail-width="220" permanent color="primary" class="pr-3">
       <layout-the-sidebar />
     </v-navigation-drawer>
     <v-main class="main">
