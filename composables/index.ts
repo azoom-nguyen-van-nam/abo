@@ -73,7 +73,7 @@ export const useMenus = () =>
             router: '/rooms'
           },
           {
-            label: '担当者一覧',
+            label: '予約登録',
             router: '/staffs'
           },
         ]
