@@ -51,7 +51,7 @@ async function saveRoom() {
 
 <template>
   <v-form v-model="validForm" ref="formAddRef" class="add-room-form">
-    <v-card class="h-screen pb-5">
+    <v-card class="h-screen">
       <v-toolbar title="会議室情報新規登録" color="primary" height="50">
         <v-btn
           icon="mdi-close"
@@ -208,7 +208,7 @@ async function saveRoom() {
           </v-row>
         </v-container>
       </v-card-text>
-      <v-card-actions class="actions d-flex justify-center pb-3">
+      <v-card-actions class="justify-center pt-3">
         <v-btn
           size="large"
           color="primary"
@@ -228,9 +228,9 @@ async function saveRoom() {
 
 <style scoped lang="scss">
 .add-room-form {
-  > .v-card > .v-card-title {
-    border-left: 3px solid rgba(var(--v-theme-primary));
-    border-bottom: 1px solid rgba(var(--v-theme-primary));
+  > .v-card > .v-card-text {
+    max-height: 80vh;
+    overflow-y: auto;
   }
   > .v-card > .v-card-text > .v-container > .group {
     border-radius: 10px;
