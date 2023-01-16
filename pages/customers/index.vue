@@ -52,7 +52,7 @@ const insertCustomer = async (customer: CreateCustomerRequest) => {
 }
 
 const staffStore = useStaffStore()
-await staffStore.getStaffs()
+await staffStore.getStaffs({})
 await searchCustomers()
 </script>
 
