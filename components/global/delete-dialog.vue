@@ -31,7 +31,7 @@ const onCloseDeleteDialog = () => {
 </script>
 
 <template>
-  <v-dialog v-model="isDelete" width="450">
+  <v-dialog v-model="isDelete" width="400">
     <v-card class="rounded-xl">
       <v-toolbar color="transparent" class="toolbar" height="50">
         <v-spacer></v-spacer>

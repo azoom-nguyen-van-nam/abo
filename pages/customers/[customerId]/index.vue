@@ -30,7 +30,7 @@ const customerStore = useCustomerStore()
 const customer = ref(await customerStore.getCustomer(customerId))
 
 const staffStore = useStaffStore()
-await staffStore.getStaffs()
+await staffStore.getStaffs({})
 
 const headers: DataTableHeader[] = [
   { text: '予約番号', value: 'formatedId', align: 'center' },
@@ -69,9 +69,11 @@ const editCustomer = async (editedCustomer: Customer) => {
   const {
     fullName,
     fullNameKana,
+    name,
     address,
     postal,
     type,
+    targetCancelType,
     fax,
     tel,
     staffId,
@@ -79,11 +81,13 @@ const editCustomer = async (editedCustomer: Customer) => {
   } = editedCustomer
   const customerData = {
     fullName,
+    name,
     fullNameKana,
     address,
     postal,
     tel,
     type,
+    targetCancelType,
     fax,
     staffId,
     memo
@@ -99,8 +103,10 @@ const editCustomer = async (editedCustomer: Customer) => {
       : '顧客者の情報を更新できませんでした。'
   })
 
-  if (isSuccess) await refreshData()
-  toogleEditDialog()
+  if (isSuccess) {
+    await refreshData()
+    toogleEditDialog()
+  }
 }
 
 await customerStore.getCustomerBookings(customerId)
@@ -120,12 +126,18 @@ const getCustomerRoomBookings = (): Booking[] => {
 }
 
 const removeCustomer = async () => {
-  const isSuccess = await customerStore.deleteCustomer(customerId)
+  const isSuccess = await customerStore
+    .deleteCustomer(customerId)
+    .catch((error) => {
+      console.log(error.response.status)
+      return false
+    })
+
   useSnackbar({
     status: isSuccess,
     message: isSuccess
       ? '顧客者情報を削除しました。'
-      : '顧客者情報を削除できませんでした。'
+      : '予約件数が存在していますので、顧客情報を削除できませんでした。'
   })
 
   if (isSuccess) navigateTo('/customers')
@@ -175,7 +187,7 @@ const refreshData = async () => {
 <template>
   <p class="heading text-h6 font-weight-bold pl-3 pb-1 mt-2 mb-6">
     <NuxtLink to="/customers" class="text-success">顧客一覧</NuxtLink>
-     > 旭電化工業株式会社
+    > 旭電化工業株式会社
   </p>
   <v-row class="justify-space-between mt-2">
     <h2 class="subtitle">顧客情報</h2>

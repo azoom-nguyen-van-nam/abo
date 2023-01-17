@@ -36,6 +36,15 @@ const submit = async () => {
       </v-text-field>
     </div>
     <div class="mb-2">
+      <label>顧客名2</label>
+      <v-text-field
+        v-model="customer.name"
+        :hide-details="false"
+        class="input"
+        variant="outlined"
+      ></v-text-field>
+    </div>
+    <div class="mb-2">
       <label>カナ名</label>
       <v-text-field
         v-model="customer.fullNameKana"
@@ -45,15 +54,6 @@ const submit = async () => {
         class="input"
       >
       </v-text-field>
-    </div>
-    <div class="mb-2">
-      <label>顧客名2</label>
-      <v-text-field
-        v-model="customer.name"
-        :hide-details="false"
-        class="input"
-        variant="outlined"
-      ></v-text-field>
     </div>
     <div class="mb-2">
       <label>住所</label>
@@ -160,7 +160,9 @@ const submit = async () => {
       <v-textarea v-model="customer.memo" variant="outlined"></v-textarea>
     </div>
     <div class="text-center mt-8">
-      <v-btn type="submit" class="text-white" height="40"> 新規登録 </v-btn>
+      <v-btn type="submit" class="text-white" height="40">
+        新規登録
+      </v-btn>
     </div>
   </v-form>
 </template>
