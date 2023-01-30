@@ -40,12 +40,13 @@ const attrs = isTextarea ? textareaAttrs : { class: 'text mt-1' }
 
   > .label {
     position: absolute;
+    top: -16px;
     font-weight: bold;
     font-size: 1.1rem;
-    top: -16px;
   }
 
   > .text {
+    min-height: 18px;
     margin-left: 50px;
     border-bottom: 1px solid $abo-secondary-color;
   }

@@ -310,6 +310,7 @@ const refreshData = async () => {
       :headers="headers"
       :items="customerBookings"
       hide-default-footer
+      no-data-text=""
     >
       <template #item.formatedId="{ item: booking }">
         <NuxtLink
